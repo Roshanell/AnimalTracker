@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-function AddIndividualAnimalForm() {
+function AddIndividualAnimalForm(props) {
 	const [individualAnimal, setIndividualAnimal] = useState({
 		nickname: "",
-		scientificname: "",
-		numbersInWild: "",
+		species: "",
+		numbersinthewild: "",
 		date: "",
 		time: "",
 	});
@@ -18,12 +18,12 @@ function AddIndividualAnimalForm() {
 		}));
 	};
 
-	const handleScientificNameChange = (e) => {
+	const handleSpeciesChange = (e) => {
 		e.preventDefault();
-		let newScientificName = e.target.value;
+		let newSpeciesName = e.target.value;
 		setIndividualAnimal((individualAnimal) => ({
 			...individualAnimal,
-			scientificname: newScientificName,
+			species: newSpeciesName,
 		}));
 	};
 	const handleNumbersInWild = (e) => {
@@ -31,7 +31,7 @@ function AddIndividualAnimalForm() {
 		let newNumbersIntheWild = e.target.value;
 		setIndividualAnimal((individualAnimal) => ({
 			...individualAnimal,
-			numbersInWild: newNumbersIntheWild,
+			numbersinthewild: newNumbersIntheWild,
 		}));
 	};
 	const handleDateChange = (e) => {
@@ -49,26 +49,12 @@ function AddIndividualAnimalForm() {
 			...individualAnimal,
 			time: newTime,
 		}));
-       // A function to handle the post request
-        const postIndividualAnimal = (newAnimal) => {
-        	return fetch("http://localhost:8080/api/individualAnimal", {
-        		method: "POST",
-        		headers: { "Content-Type": "application/json" },
-        		body: JSON.stringify(newAnimal),
-        	})
-        		.then((response) => {
-        			return response.json();
-        		})
-        		.then((data) => {
-        			console.log("From the post in the frontEnd", data);
-        			setIndividualAnimal((individualAnimal) => [...individualAnimal, data]);
-        		});
-        };
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setIndividualAnimal(individualAnimal);
 		console.log(individualAnimal);
+		props.postIndividualAnimal(individualAnimal);
 	};
 
 	return (
@@ -85,7 +71,7 @@ function AddIndividualAnimalForm() {
 				type="text"
 				placeholder="Scientific Name"
 				className="input input-bordered input-primary w-full max-w-xs"
-				onChange={handleScientificNameChange}
+				onChange={handleSpeciesChange}
 			/>
 			<input
 				type="number"
